@@ -26,9 +26,7 @@ def recv_chunk(sock):  # -> bytearray:
 
         chunk = bytearray(remaining)
 
-        if remaining == 0:  # Formal end of the HTTP chunked stream. Consider raising an exception.
-            pass
-        elif remaining <= 2:  # E.g. an HTTP chunk with just a keep-alive delimiter.
+        if remaining <= 2:  # E.g. an HTTP chunk with just a keep-alive delimiter or an end stream length of 0.
             chunk[:remaining] = buf[start:start + remaining]
         # There are several edge cases (remaining == [3-6]) as the chunk size exceeds the length
         # of the initial read of 8 bytes. With Twitter, these do not, in practice, occur. The
